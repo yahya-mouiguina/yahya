@@ -1,0 +1,68 @@
+:root {
+  /* Absolute High Contrast Neutrals */
+  --bg-main: #ffffff;       
+  --bg-card: #ffffff;       
+  --bg-secondary: #f4f4f5;
+  
+  /* Absolute Text Hierarchy */
+  --text-main: #000000;     
+  --text-muted: #3f3f46;    
+  --text-light: #71717a;
+  
+  /* Borders and Dividers */
+  --border-light: #e4e4e7;
+  --border-focus: #d4d4d8;
+
+  /* Primary Brand Colors */
+  --red: #cc0000;           
+  --gold: #92400e; /* Deeper bronze for massive contrast */          
+
+  /* Proper Elevation/Shadows for Light Mode */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.06), 0 4px 6px -2px rgba(0, 0, 0, 0.03);
+  --shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  
+  --font-heading: var(--font-playfair), 'Playfair Display', serif;
+  --font-body: var(--font-inter), 'Inter', sans-serif;
+}
+
+* { box-sizing: border-box; padding: 0; margin: 0; }
+
+html, body {
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-heading);
+  font-weight: 500;
+  color: var(--text-main);
+  line-height: 1.2;
+}
+
+a { color: inherit; text-decoration: none; }
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 4rem;
+}
+
+/* Glassmorphism that actually works in Light Mode */
+.glass {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: var(--shadow-sm);
+}
+
+.text-gold {
+  color: var(--gold);
+}

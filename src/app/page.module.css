@@ -1,0 +1,394 @@
+.main { min-height: 100vh; position: relative; overflow: hidden; background: var(--bg-main); }
+
+/* Clean Elegant Pill Header */
+.header {
+  position: fixed; top: 1.5rem; left: 0; width: 100%; z-index: 100;
+  display: flex; justify-content: center;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none; /* Let clicks pass through empty sides */
+}
+
+.navWrapper {
+  pointer-events: auto; /* Re-enable clicks inside the pill */
+  display: flex; justify-content: space-between; align-items: center;
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: var(--shadow-md);
+  padding: 0.6rem 1.5rem;
+  border-radius: 100px;
+  width: 90%;
+  max-width: 1200px;
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.headerScrolled .navWrapper {
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border-light);
+  width: 96%;
+}
+
+.logoWrapper { display: flex; align-items: center; gap: 15px; }
+.logoText { font-family: var(--font-heading); font-size: 1.3rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text-main); }
+.logoText span { color: var(--gold); font-weight: 500; font-family: var(--font-body); font-size: 0.8rem; letter-spacing: 1px; margin-left: 6px;}
+
+.navLinks { display: flex; gap: 0.5rem; }
+.navLinks a { 
+  font-size: 0.85rem; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; 
+  padding: 0.8rem 1.2rem; border-radius: 30px;
+  color: var(--text-main); transition: all 0.3s; font-weight: 900;
+}
+.navLinks a:hover { color: var(--text-main); background: rgba(0,0,0,0.04); }
+
+.navRight { display: flex; align-items: center; }
+.navPhoneBtn {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--text-main); color: #fff;
+  padding: 0.8rem 1.5rem; border-radius: 100px;
+  font-size: 0.8rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
+  transition: all 0.3s;
+}
+.navPhoneBtn:hover { background: var(--gold); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+
+/* SaaS Style Split Hero */
+.heroSplit {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border-light);
+  overflow: hidden;
+}
+
+.heroTextSide {
+  flex: 1;
+  padding: 0 4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  z-index: 10;
+  background: var(--bg-card); /* Ensure contrast */
+}
+
+.heroImageSide {
+  flex: 1.2;
+  height: 100%;
+  position: relative;
+  clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%);
+}
+
+.heroImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.heroContent {
+  max-width: 600px;
+}
+
+.heroSubtitle {
+  font-size: 0.9rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.heroTitle {
+  font-size: clamp(3.5rem, 5vw, 5.5rem);
+  line-height: 1.05;
+  margin-bottom: 2rem;
+  letter-spacing: -1.5px;
+  color: var(--text-main);
+  padding-top: 5rem;
+}
+.heroTitle i {
+  font-style: italic;
+  color: var(--gold);
+}
+
+.heroDesc {
+  font-size: 1.15rem;
+  color: var(--text-muted);
+  line-height: 1.7;
+  margin-bottom: 3rem;
+  max-width: 500px;
+}
+
+.heroFeatures {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 3.5rem;
+}
+
+.featureItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--text-main);
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.featureIconBox {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: rgba(180, 83, 9, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.exploreBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--text-main);
+  color: #fff;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: var(--shadow-md);
+  transition: all 0.3s ease;
+  width: fit-content;
+}
+
+.exploreBtn:hover {
+  background: var(--gold);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Decoupled Fleet Cards */
+.section { padding: 8rem 0; position: relative; z-index: 2; background: var(--bg-main); }
+.sectionHeader {
+  margin-bottom: 4rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.sectionHeader h2 { font-size: 3.5rem; line-height: 1; letter-spacing: -1px; margin-bottom: 1rem; }
+.sectionHeader p { color: var(--text-muted); font-size: 1.1rem; max-width: 600px; line-height: 1.6; }
+
+.grid { 
+  display: grid; 
+  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); 
+  gap: 2.5rem; 
+}
+
+.carCard {
+  background: var(--bg-card);
+  border-radius: 16px;
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.carCard:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-hover);
+  border-color: var(--border-focus);
+}
+
+.carImageWrapper {
+  width: 100%;
+  height: 260px;
+  position: relative;
+  overflow: hidden;
+  background: #f3f4f6; /* Placeholder gray if image fails */
+}
+
+.carTopBadge {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background: rgba(255,255,255,0.9);
+  color: var(--text-main);
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  backdrop-filter: blur(4px);
+  box-shadow: var(--shadow-sm);
+  z-index: 2;
+}
+
+.carImageReal {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s ease;
+}
+
+.carCard:hover .carImageReal {
+  transform: scale(1.05);
+}
+
+.carDetailsBox {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.carHeaderRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+}
+
+.carHeaderRow h3 {
+  font-size: 1.5rem;
+  letter-spacing: -0.5px;
+  margin-bottom: 0.5rem;
+}
+
+.carPrice {
+  text-align: right;
+  background: #f8f9fa;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  border: 1px solid var(--border-light);
+}
+.carPrice .amount {
+  font-size: 1.4rem;
+  font-family: var(--font-heading);
+  color: var(--gold);
+  font-weight: 700;
+}
+.carPrice small { font-size: 0.9rem; margin-left: 2px; }
+.carPrice .period {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  display: block;
+}
+
+.carSpecsReveal {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  padding: 1.5rem 0;
+  border-top: 1px solid var(--border-light);
+  border-bottom: 1px solid var(--border-light);
+  margin-bottom: 1.5rem;
+  margin-top: auto;
+}
+
+.specItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.bookNowBtn {
+  width: 100%;
+  background: white;
+  color: var(--text-main);
+  border: 1px solid var(--border-focus);
+  padding: 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+}
+
+.carCard:hover .bookNowBtn {
+  background: var(--text-main);
+  color: #fff;
+  border-color: var(--text-main);
+}
+
+/* Footer */
+.footer { padding: 6rem 0 4rem; background: var(--bg-card); border-top: 1px solid var(--border-light); }
+.footerGrid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 4rem; margin-bottom: 4rem; }
+.footerDesc { color: var(--text-muted); margin-top: 1.5rem; max-width: 400px; font-size: 0.95rem; line-height: 1.7; }
+.footerLinks h4 { margin-bottom: 1.5rem; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; color: var(--text-main); font-weight: 700;}
+.footerLinks p { color: var(--text-muted); margin-bottom: 1.2rem; display: flex; align-items: center; gap: 12px; font-size: 0.9rem; transition: color 0.3s;}
+.footerLinks p:hover { color: var(--gold); cursor: pointer; }
+
+@media (max-width: 1024px) {
+  .container { padding: 0 2rem; }
+  .grid { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+  .heroTitle { font-size: 3.5rem; }
+  .heroSplit { flex-direction: column; height: auto; padding-top: 130px; }
+  .heroImageSide { order: 1; width: 100%; height: 320px; clip-path: none; margin-top: 0; }
+  .heroTextSide { order: 2; padding: 2rem 1rem; align-items: center; text-align: center; }
+  .heroFeatures { align-items: flex-start; text-align: left; }
+}
+
+@media (max-width: 768px) {
+  .container { padding: 0 1.2rem; }
+  .navWrapper { width: 95%; padding: 0.6rem 0.8rem; flex-direction: row; justify-content: space-between; gap: 10px; }
+  .logoWrapper { gap: 8px; }
+  .logoWrapper svg { width: 32px; height: 24px; }
+  .logoText { font-size: 0.95rem; letter-spacing: 1px; }
+  .logoText span { font-size: 0.65rem; margin-left: 3px; }
+  .navLinks { display: none; }
+  .navPhoneBtn { padding: 0.5rem 0.8rem; font-size: 0.75rem; width: auto; justify-content: center; white-space: nowrap; }
+  
+  /* Creative Hero Drawer Layout for Mobile */
+  .heroSplit { 
+    display: block; 
+    position: relative; 
+    height: 100vh; 
+    height: 100dvh; 
+    padding-top: 0; 
+    overflow: hidden; 
+  }
+  .heroImageSide { 
+    position: absolute; top: 0; left: 0; 
+    width: 100%; 
+    height: 60vh; 
+    height: 60dvh; 
+    margin: 0; 
+  }
+  .heroImage { object-position: center; }
+  .heroTextSide { 
+    position: absolute; bottom: 0; left: 0; 
+    width: 100%; 
+    height: auto; 
+    min-height: 48vh; 
+    min-height: 48dvh; 
+    padding: 2.5rem 1.5rem; 
+    background: var(--bg-card); 
+    border-radius: 40px 40px 0 0; 
+    box-shadow: 0 -15px 50px rgba(0,0,0,0.12); 
+    z-index: 2; 
+    text-align: center;
+    align-items: center;
+  }
+  .heroTitle { font-size: 2.6rem; margin-bottom: 1rem; }
+  .heroSubtitle { font-size: 0.8rem; margin-bottom: 1rem; }
+  .heroDesc { font-size: 0.95rem; line-height: 1.5; margin-bottom: 1.5rem; }
+  .heroFeatures { align-items: center; text-align: center; width: 100%; margin-bottom: 1.5rem; }
+  .featureItem { font-size: 0.85rem; }
+  .exploreBtn { width: 100%; justify-content: center; padding: 1.2rem; }
+
+  .footerGrid { grid-template-columns: 1fr; gap: 2.5rem; }
+  .sectionHeader h2 { font-size: 2.5rem; }
+}
