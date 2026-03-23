@@ -24,7 +24,7 @@
 }
 
 .headerScrolled .navWrapper {
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(255, 255, 255, 1);
   box-shadow: var(--shadow-lg);
   border: 1px solid var(--border-light);
   width: 96%;
