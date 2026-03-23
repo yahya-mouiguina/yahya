@@ -10,6 +10,7 @@ import styles from './page.module.css';
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
+  ScrollTrigger.config({ ignoreMobileResize: true });
 }
 
 // Custom split text utility for React (replaces SplitText plugin)

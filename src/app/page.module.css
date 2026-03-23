@@ -353,16 +353,14 @@
   .heroSplit { 
     display: block; 
     position: relative; 
-    height: 100vh; 
-    height: 100dvh; 
+    height: 100svh; 
     padding-top: 0; 
     overflow: hidden; 
   }
   .heroImageSide { 
     position: absolute; top: 0; left: 0; 
     width: 100%; 
-    height: 60vh; 
-    height: 60dvh; 
+    height: 60svh; 
     margin: 0; 
   }
   .heroImage { object-position: bottom; }
@@ -370,8 +368,7 @@
     position: absolute; bottom: 0; left: 0; 
     width: 100%; 
     height: auto; 
-    min-height: 48vh; 
-    min-height: 48dvh; 
+    min-height: 48svh;  
     padding: 2.5rem 1.5rem; 
     background: var(--bg-card); 
     border-radius: 40px 40px 0 0; 
