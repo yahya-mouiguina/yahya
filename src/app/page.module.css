@@ -332,7 +332,6 @@
 .footerLinks p:hover { color: var(--gold); cursor: pointer; }
 
 @media (max-width: 1024px) {
-  .container { padding: 0 2rem; }
   .grid { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
   .heroTitle { font-size: 3.5rem; }
   .heroSplit { flex-direction: column; height: auto; padding-top: 130px; }
@@ -342,14 +341,13 @@
 }
 
 @media (max-width: 768px) {
-  .container { padding: 0 1.2rem; }
   .navWrapper { width: 95%; padding: 0.6rem 0.8rem; flex-direction: row; justify-content: space-between; gap: 10px; }
   .logoWrapper { gap: 8px; }
   .logoWrapper svg { width: 32px; height: 24px; }
   .logoText { font-size: 0.95rem; letter-spacing: 1px; }
   .logoText span { font-size: 0.65rem; margin-left: 3px; }
   .navLinks { display: none; }
-  .navPhoneBtn { padding: 0.5rem 0.8rem; font-size: 0.75rem; width: auto; justify-content: center; white-space: nowrap; }
+  .navPhoneBtn { padding: 0.4rem 0.6rem; font-size: 0.65rem; width: auto; justify-content: center; white-space: nowrap; gap: 4px; }
   
   /* Creative Hero Drawer Layout for Mobile */
   .heroSplit { 
@@ -367,7 +365,7 @@
     height: 60dvh; 
     margin: 0; 
   }
-  .heroImage { object-position: center; }
+  .heroImage { object-position: bottom; }
   .heroTextSide { 
     position: absolute; bottom: 0; left: 0; 
     width: 100%; 
@@ -389,6 +387,265 @@
   .featureItem { font-size: 0.85rem; }
   .exploreBtn { width: 100%; justify-content: center; padding: 1.2rem; }
 
-  .footerGrid { grid-template-columns: 1fr; gap: 2.5rem; }
+  /* Fix grid overflow and center cards */
+  .grid { grid-template-columns: 1fr; gap: 1.5rem; }
+  .carCard { text-align: center; }
+  .carDetailsBox { padding: 1.5rem 1rem; }
+  .carHeaderRow { flex-direction: column; align-items: center; gap: 0.5rem; }
+  .carPrice { text-align: center; width: 100%; }
+  .carSpecsReveal { grid-template-columns: 1fr; gap: 0.8rem; justify-items: center; }
+  .specItem { justify-content: center; }
+
+  .footerGrid { grid-template-columns: 1fr; gap: 2.5rem; text-align: center; }
+  .footerLinks p { justify-content: center; }
   .sectionHeader h2 { font-size: 2.5rem; }
+
+  /* Promo mobile */
+  .promoTitle { font-size: 2.2rem; }
+  .promoTrack { padding: 1rem 0.5rem 2rem; gap: 1rem; }
+  .promoCard { min-width: 280px; }
+}
+
+/* ============================================================
+   PROMO SECTION (SaaS Pricing / Feature Grid Style)
+   ============================================================ */
+.promoSection {
+  position: relative;
+  z-index: 10;
+  background: var(--bg-secondary);
+  padding: 8rem 0;
+  border-top: 1px solid var(--border-light);
+}
+
+.promoInner {
+  position: relative;
+  z-index: 2;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.promoHeader {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.promoEyebrow {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+  background: rgba(180,83,9,0.08);
+  padding: 0.4rem 1rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+}
+
+.promoTitle {
+  font-family: var(--font-heading);
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--text-main);
+  line-height: 1.2;
+  letter-spacing: -1px;
+  margin-bottom: 1rem;
+}
+.promoTitle em {
+  font-style: normal;
+  color: var(--gold);
+}
+
+.promoSub {
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  max-width: 500px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+
+/* ── SaaS Pricing Grid ───────────────────────────────────────── */
+.promoGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  align-items: stretch;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* ── Promo Card ─────────────────────────────────────────────── */
+.promoCard {
+  background: var(--bg-card);
+  border-radius: 12px;
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  padding: 2rem;
+  position: relative;
+}
+.promoCard:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Featured card */
+.promoCardFeatured {
+  border: 2px solid var(--text-main);
+  box-shadow: var(--shadow-md);
+  transform: scale(1.02);
+}
+.promoCardFeatured:hover {
+  transform: scale(1.02) translateY(-5px);
+}
+
+.promoFeaturedBadge {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--text-main);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 0.3rem 1rem;
+  border-radius: 20px;
+  z-index: 5;
+  white-space: nowrap;
+}
+
+/* ── Card Header (Title & Price) ────────────────────────────── */
+.promoCardHeader {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.promoCardHeader h3 {
+  font-family: var(--font-body);
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-main);
+  margin-bottom: 0.5rem;
+}
+
+.promoCarName {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.promoDiscount {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.oldPrice {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  text-decoration: line-through;
+}
+
+.newPrice {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: var(--text-main);
+  font-family: var(--font-heading);
+  line-height: 1;
+}
+.newPrice small {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  margin-left: 4px;
+}
+
+/* ── Card Body (Features) ─────────────────────────────────────── */
+.promoCardBody {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.promoDesc {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin-bottom: 1.5rem;
+  min-height: 2.5rem;
+}
+
+.promoFeatList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  margin-bottom: 2rem;
+  flex-grow: 1;
+}
+.promoFeatList span {
+  font-size: 0.85rem;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+}
+.featIcon {
+  color: var(--gold);
+}
+
+/* ── Call to Action ───────────────────────────────────────────── */
+.promoBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.2s ease;
+  background: var(--bg-secondary);
+  color: var(--text-main);
+  border: 1px solid var(--border-focus);
+}
+.promoBtn:hover {
+  background: var(--border-light);
+}
+
+.promoBtnFeatured {
+  background: var(--text-main);
+  color: #fff;
+  border: 1px solid var(--text-main);
+}
+.promoBtnFeatured:hover {
+  background: rgba(0,0,0,0.8);
+  border-color: rgba(0,0,0,0.8);
+  color: #fff;
+}
+
+/* ── Responsive ─────────────────────────────────────────────── */
+@media (max-width: 1200px) {
+  .promoGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .promoSection { padding: 4rem 0; }
+  .promoTitle { font-size: 2.2rem; }
+  .promoGrid { grid-template-columns: 1fr; }
+  .promoCard { padding: 1.5rem; }
+  .promoCardFeatured { transform: none; }
+  .promoCardFeatured:hover { transform: translateY(-5px); }
+  .promoInner { padding: 0 1.2rem; }
 }

@@ -1,26 +1,66 @@
 "use client";
 
-import { useState, useEffect } from 'react';
-import { motion, useScroll, useTransform, Variants } from 'framer-motion';
+import { useState, useEffect, useRef } from 'react';
+import gsap from 'gsap';
+import { useGSAP } from '@gsap/react';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import Lenis from 'lenis';
 import { MapPin, Calendar, ArrowRight, Phone, Mail, MapPinned, Users, Fuel, Settings2, Star, ArrowDown, ShieldCheck } from 'lucide-react';
 import styles from './page.module.css';
 
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
+
+// Custom split text utility for React (replaces SplitText plugin)
+const SplitTextChars = ({ text }: { text: string }) => {
+  return (
+    <>
+      {text.split('').map((char, i) => (
+        <span 
+          key={i} 
+          className="char" 
+          style={{ display: 'inline-block', whiteSpace: char === ' ' ? 'pre' : 'normal' }}
+        >
+          {char}
+        </span>
+      ))}
+    </>
+  );
+};
+
+const SplitTextWords = ({ text }: { text: string }) => {
+  return (
+    <>
+      {text.split(' ').map((word, i) => (
+        <span 
+          key={i} 
+          className="word-wrapper" 
+          style={{ display: 'inline-block', overflow: 'hidden', verticalAlign: 'top', marginRight: '0.3em' }}
+        >
+          <span className="word" style={{ display: 'inline-block' }}>
+            {word}
+          </span>
+        </span>
+      ))}
+    </>
+  );
+};
+
 const Logo = () => (
   <div className={styles.logoWrapper}>
-    <svg width="45" height="35" viewBox="0 0 100 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <motion.path 
+    <svg className="gsap-logo" width="45" height="35" viewBox="0 0 100 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path 
+        className="logoPath1"
         d="M 5 45 Q 50 -10 95 45" 
         stroke="#dc2626" strokeWidth="6" strokeLinecap="round" fill="none"
-        initial={{ pathLength: 0, opacity: 0 }}
-        animate={{ pathLength: [0, 1, 1, 1], opacity: [0, 1, 0.8, 1] }}
-        transition={{ duration: 3, times: [0, 0.4, 0.7, 1], repeat: Infinity, repeatType: "reverse", ease: "easeInOut" }}
+        strokeDasharray="200" strokeDashoffset="200"
       />
-      <motion.path 
+      <path 
+        className="logoPath2"
         d="M 15 52 Q 50 5 85 52" 
         stroke="#b45309" strokeWidth="6" strokeLinecap="round" fill="none"
-        initial={{ pathLength: 0, opacity: 0 }}
-        animate={{ pathLength: [0, 1, 1, 1], opacity: [0, 1, 0.7, 1] }}
-        transition={{ duration: 3.5, times: [0, 0.4, 0.7, 1], repeat: Infinity, repeatType: "reverse", ease: "easeInOut", delay: 0.2 }}
+        strokeDasharray="200" strokeDashoffset="200"
       />
     </svg>
     <div className={styles.logoText}>BOULAAYOUNE<span>CAR</span></div>
@@ -37,28 +77,225 @@ const FLEET = [
 ];
 
 export default function Home() {
+  const containerRef = useRef<HTMLDivElement>(null);
   const [scrolled, setScrolled] = useState(false);
-  const { scrollY } = useScroll();
-  const yImage = useTransform(scrollY, [0, 1000], [0, 200]);
 
   useEffect(() => {
+    // Top-tier seamless Lenis smooth scroll
+    const lenis = new Lenis({
+      duration: 1.5,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      orientation: 'vertical',
+      smoothWheel: true,
+      touchMultiplier: 2,
+    });
+
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add((time) => lenis.raf(time * 1000));
+    gsap.ticker.lagSmoothing(0);
+
     const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      gsap.ticker.remove(lenis.raf);
+      lenis.destroy();
+    };
   }, []);
 
-  const slideUp: Variants = {
-    hidden: { opacity: 0, y: 40 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
-  };
+  useGSAP(() => {
+    /* -------------------------------------------------------------------------- */
+    /* 1. EPIC INITIAL LOAD SEQUENCE                                              */
+    /* -------------------------------------------------------------------------- */
+    const tl = gsap.timeline();
 
-  const staggerContainer: Variants = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { staggerChildren: 0.15 } }
-  };
+    // Reset initial states for absolute WOW sequence
+    gsap.set('.word', { yPercent: 120, rotationZ: 10, opacity: 0 });
+    // Animate the hero wrapper for masks to avoid CSS transform conflicts
+    gsap.set('.heroImageSide', { clipPath: "polygon(20% 20%, 80% 20%, 80% 80%, 20% 80%)", filter: "grayscale(100%) blur(10px)", opacity: 0 });
+    // Animate the actual image for an initial scale-down effect
+    gsap.set('.heroImageReal', { scale: 1.3 });
+    
+    gsap.set('.featureItem', { x: -50, opacity: 0 });
+    gsap.set('.exploreBtn', { opacity: 0, scale: 0.8, y: 30 });
+    
+    // Logo drawing
+    tl.to('.logoPath1', { strokeDashoffset: 0, duration: 1.5, ease: "power3.inOut" }, 0)
+      .to('.logoPath2', { strokeDashoffset: 0, duration: 2, ease: "power3.inOut" }, 0.2);
+
+    // Dynamic typography masked reveal
+    tl.to('.word', {
+      yPercent: 0,
+      rotationZ: 0,
+      opacity: 1,
+      duration: 1.2,
+      stagger: 0.08,
+      ease: "power4.out"
+    }, 0.3);
+
+    // Wrapper dramatically snaps into vibrant color and unmasks
+    tl.to('.heroImageSide', {
+      clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
+      filter: "grayscale(0%) blur(0px)",
+      opacity: 1,
+      duration: 2,
+      ease: "expo.out"
+    }, 0.5);
+
+    // Deep zoom out effect on the image itself
+    tl.to('.heroImageReal', {
+      scale: 1,
+      duration: 2.2,
+      ease: "expo.out"
+    }, 0.5);
+
+    // Details slide in
+    tl.to('.featureItem', { x: 0, opacity: 1, duration: 1, stagger: 0.1, ease: "power3.out" }, 1)
+      .to('.exploreBtn', { opacity: 1, scale: 1, y: 0, duration: 0.8, ease: "back.out(2)" }, 1.3);
+
+    /* -------------------------------------------------------------------------- */
+    /* 2. MIND-BLOWING PINNED SCROLL-JACKING                                      */
+    /* -------------------------------------------------------------------------- */
+    const isMobile = window.innerWidth < 768;
+
+    const pinTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: ".heroSplit",
+        start: "top top",
+        end: "+=1200",
+        scrub: 1,
+        pin: true,
+        anticipatePin: 1
+      }
+    });
+
+    if (!isMobile) {
+      // Desktop: text side pushes back, image expands left to fill screen
+      pinTl.to('.heroTextSide', {
+        scale: 0.7,
+        opacity: 0,
+        xPercent: -30,
+        filter: "blur(10px)",
+        ease: "power2.inOut"
+      }, 0);
+
+      pinTl.to('.heroImageSide', {
+        scale: 1.5,
+        xPercent: -35,
+        ease: "power2.inOut",
+        transformOrigin: "center center"
+      }, 0);
+    } else {
+      // Mobile: image is absolutely positioned top-half.
+      // Fade the text card below, scale image straight from its own center.
+      pinTl.to('.heroTextSide', {
+        opacity: 0,
+        y: 80,
+        filter: "blur(8px)",
+        ease: "power2.inOut"
+      }, 0);
+
+      pinTl.to('.heroImageSide', {
+        scale: 2.2,
+        xPercent: 0,
+        yPercent: 0,
+        ease: "power2.inOut",
+        transformOrigin: "50% 50%"
+      }, 0);
+    }
+
+    /* -------------------------------------------------------------------------- */
+    /* 3. 3D GRID STAGGER REVEAL (THE FLEET)                                      */
+    /* -------------------------------------------------------------------------- */
+    // Instead of a simple fade, cards flip onto the screen with 3D rotation and scale
+    
+    gsap.from('.gsap-section-header', {
+      y: 150,
+      scale: 0.9,
+      opacity: 0,
+      duration: 1.5,
+      ease: "expo.out",
+      scrollTrigger: {
+        trigger: ".gsap-section-header",
+        start: "top 90%",
+      }
+    });
+
+    gsap.utils.toArray('.gsap-car-card').forEach((card: any, i) => {
+      gsap.fromTo(card, 
+        { 
+          y: 200, 
+          rotationX: 45, 
+          rotationY: 15,
+          scale: 0.8,
+          opacity: 0,
+          transformPerspective: 1000 
+        }, 
+        {
+          y: 0,
+          rotationX: 0,
+          rotationY: 0,
+          scale: 1,
+          opacity: 1,
+          duration: 1.8,
+          ease: "expo.out",
+          scrollTrigger: {
+            trigger: card,
+            start: "top 95%",
+            end: "bottom center",
+            toggleActions: "play none none reverse"
+          }
+        }
+      );
+    });
+
+    // Sub-elements inside cards have miniature staggered entries
+    gsap.utils.toArray('.gsap-car-card').forEach((card: any) => {
+      const details = card.querySelectorAll('.carSpecsReveal .specItem');
+      gsap.from(details, {
+        y: 20,
+        opacity: 0,
+        duration: 0.8,
+        stagger: 0.1,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: card,
+          start: "top 80%"
+        }
+      });
+    });
+
+    /* -------------------------------------------------------------------------- */
+    /* 4. PROMO SECTION ENTRANCE                                                  */
+    /* -------------------------------------------------------------------------- */
+    gsap.from('.promo-header', {
+      y: 80,
+      opacity: 0,
+      duration: 1.4,
+      ease: "expo.out",
+      scrollTrigger: {
+        trigger: '.promo-section',
+        start: "top 80%",
+      }
+    });
+
+    gsap.from('.promoCard', {
+      x: 120,
+      opacity: 0,
+      duration: 1.2,
+      stagger: 0.15,
+      ease: "expo.out",
+      scrollTrigger: {
+        trigger: '.promoGrid',
+        start: "top 85%",
+      }
+    });
+
+  }, { scope: containerRef });
 
   return (
-    <main className={styles.main}>
+    <main ref={containerRef} className={styles.main} style={{ overflowX: 'hidden' }}>
       <header className={`${styles.header} ${scrolled ? styles.headerScrolled : ''}`}>
         <div className={styles.navWrapper}>
           <Logo />
@@ -80,76 +317,66 @@ export default function Home() {
         </div>
       </header>
 
-      <section id="accueil" className={styles.heroSplit}>
-        <div className={styles.heroTextSide}>
-          <motion.div 
-            className={styles.heroContent}
-            initial="hidden"
-            animate="visible"
-            variants={staggerContainer}
-          >
-            <motion.h1 variants={slideUp} className={styles.heroTitle}>
-              L'Élégance <i>en</i> <br/>Mouvement
-            </motion.h1>
-            <motion.p variants={slideUp} className={styles.heroDesc}>
-              Votre agence de confiance pour la location de véhicules premium et fiables à Agadir. Explorez notre collection et voyagez dans le confort absolu.
-            </motion.p>
+      {/* Hero section */}
+      <section id="accueil" className={`${styles.heroSplit} heroSplit`}>
+        <div className={`${styles.heroTextSide} heroTextSide`}>
+          <div className={`${styles.heroContent} heroContent`}>
             
-            <motion.div variants={slideUp} className={styles.heroFeatures}>
-              <div className={styles.featureItem}>
+            {/* The WOW Typography Reveal */}
+            <h1 className={`${styles.heroTitle} heroTitle`} style={{ overflow: 'hidden' }}>
+              <SplitTextWords text="L'Élégance" /> <br/>
+              <i style={{ color: 'var(--gold)', overflow: 'hidden', display: 'inline-block' }}>
+                <SplitTextWords text="en" />
+              </i> <br/>
+              <SplitTextWords text="Mouvement" />
+            </h1>
+            
+            <p className={`${styles.heroDesc} heroDesc`} style={{ overflow: 'hidden' }}>
+              <SplitTextWords text="Votre agence de confiance pour la location de véhicules premium et fiables à Agadir. Explorez notre collection et voyagez dans le confort absolu." />
+            </p>
+            
+            <div className={`${styles.heroFeatures} heroFeatures`}>
+              <div className={`${styles.featureItem} featureItem`}>
                 <div className={styles.featureIconBox}><MapPin size={16} color="#b45309" /></div>
                 Livraison à l'Aéroport Al Massira
               </div>
-              <div className={styles.featureItem}>
+              <div className={`${styles.featureItem} featureItem`}>
                 <div className={styles.featureIconBox}><Phone size={16} color="#b45309" /></div>
                 Assistance Téléphonique 24/7
               </div>
-              <div className={styles.featureItem}>
+              <div className={`${styles.featureItem} featureItem`}>
                 <div className={styles.featureIconBox}><ShieldCheck size={16} color="#b45309" /></div>
                 Véhicules Entretenus & Assurés
               </div>
-            </motion.div>
+            </div>
 
-            <motion.a variants={slideUp} href="#flotte" className={styles.exploreBtn}>
+            <a href="#flotte" className={`${styles.exploreBtn} exploreBtn`}>
               Découvrir la Flotte
               <ArrowDown size={18} />
-            </motion.a>
-          </motion.div>
+            </a>
+          </div>
         </div>
 
-        <div className={styles.heroImageSide}>
-          <motion.img 
-            style={{ y: yImage }}
+        <div className={`${styles.heroImageSide} heroImageSide`} style={{ transformOrigin: 'center center' }}>
+          <img 
             src="https://images.unsplash.com/photo-1542282088-fe8426682b8f?auto=format&fit=crop&w=2000&q=80" 
             alt="Premium Light Car" 
-            className={styles.heroImage}
+            className={`${styles.heroImage} heroImageReal`}
           />
         </div>
       </section>
 
-      <section id="flotte" className={styles.section}>
+      {/* Fleet section */}
+      <section id="flotte" className={styles.section} style={{ position: 'relative', zIndex: 10, background: 'var(--bg-main)' }}>
         <div className="container">
-          <motion.div 
-            className={styles.sectionHeader}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            variants={slideUp}
-          >
+          <div className={`${styles.sectionHeader} gsap-section-header`}>
             <h2>Nos Véhicules</h2>
             <p>Une sélection transparente et sans surprise. Choisissez la catégorie qui correspond parfaitement à votre séjour.</p>
-          </motion.div>
+          </div>
 
           <div className={styles.grid}>
             {FLEET.map((car, i) => (
-              <motion.div 
-                key={i} 
-                className={styles.carCard}
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.6, delay: i * 0.1, ease: "easeOut" }}
-              >
+              <div key={i} className={`${styles.carCard} gsap-car-card`}>
                 <div className={styles.carImageWrapper}>
                   <span className={styles.carTopBadge}>{car.cat}</span>
                   <img src={car.img} alt={car.name} className={styles.carImageReal} />
@@ -164,10 +391,10 @@ export default function Home() {
                     </div>
                   </div>
                   
-                  <div className={styles.carSpecsReveal}>
-                    <div className={styles.specItem}><Users size={16} color="#9ca3af"/> {car.seats} Places</div>
-                    <div className={styles.specItem}><Fuel size={16} color="#9ca3af"/> {car.fuel}</div>
-                    <div className={styles.specItem}><Settings2 size={16} color="#9ca3af"/> {car.trans}</div>
+                  <div className={`${styles.carSpecsReveal} carSpecsReveal`}>
+                    <div className={`${styles.specItem} specItem`}><Users size={16} color="#9ca3af"/> {car.seats} Places</div>
+                    <div className={`${styles.specItem} specItem`}><Fuel size={16} color="#9ca3af"/> {car.fuel}</div>
+                    <div className={`${styles.specItem} specItem`}><Settings2 size={16} color="#9ca3af"/> {car.trans}</div>
                   </div>
                   
                   <a 
@@ -179,8 +406,107 @@ export default function Home() {
                     Plus d'Informations <ArrowRight size={18}/>
                   </a>
                 </div>
-              </motion.div>
+              </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ─── PROMOTIONS GRID (SaaS Style) ───────────────────────── */}
+      <section className={`${styles.promoSection} promo-section`}>
+        <div className={styles.promoInner}>
+          <div className={`${styles.promoHeader} promo-header`}>
+            <span className={styles.promoEyebrow}>Offres Exclusives</span>
+            <h2 className={styles.promoTitle}>Promotions du <em>Moment</em></h2>
+            <p className={styles.promoSub}>Découvrez des tarifs préférentiels clairs, sans frais cachés, pensés pour répondre à chacun de vos besoins.</p>
+          </div>
+
+          <div className={`${styles.promoGrid} promoGrid`}>
+
+            {/* Card 1 */}
+            <div className={`${styles.promoCard} promoCard`}>
+              <div className={styles.promoCardHeader}>
+                <h3>Semaine Découverte</h3>
+                <span className={styles.promoCarName}>Pour Renault Clio 5</span>
+                <div className={styles.promoDiscount}>
+                  <span className={styles.oldPrice}>350 DH</span>
+                  <span className={styles.newPrice}>230 DH<small>/jour</small></span>
+                </div>
+              </div>
+              <div className={styles.promoCardBody}>
+                <p className={styles.promoDesc}>Idéal pour un court séjour en ville. Roulez dans une voiture neuve à prix réduit.</p>
+                <div className={styles.promoFeatList}>
+                  <span><ShieldCheck size={16} className={styles.featIcon} /> Kilométrage illimité</span>
+                  <span><ShieldCheck size={16} className={styles.featIcon} /> Assurance incluse</span>
+                  <span><ShieldCheck size={16} className={styles.featIcon} /> Annulation gratuite</span>
+                </div>
+                <a
+                  href={`https://wa.me/212671720593?text=${encodeURIComponent('Bonjour ! Je suis intéressé par la promotion Semaine Découverte sur la Renault Clio 5.')}`}
+                  target="_blank" rel="noopener noreferrer"
+                  className={styles.promoBtn}
+                >
+                  Réserver <ArrowRight size={16} />
+                </a>
+              </div>
+            </div>
+
+            {/* Card 2 (Featured) */}
+            <div className={`${styles.promoCard} ${styles.promoCardFeatured} promoCard`}>
+              <div className={styles.promoFeaturedBadge}>Most Popular</div>
+              <div className={styles.promoCardHeader}>
+                <h3>Pack Weekend Luxe</h3>
+                <span className={styles.promoCarName}>Pour Hyundai Accent</span>
+                <div className={styles.promoDiscount}>
+                  <span className={styles.oldPrice}>450 DH</span>
+                  <span className={styles.newPrice}>340 DH<small>/jour</small></span>
+                </div>
+              </div>
+              <div className={styles.promoCardBody}>
+                <p className={styles.promoDesc}>Profitez du confort exceptionnel d'une berline élégante pour votre weekend.</p>
+                <div className={styles.promoFeatList}>
+                  <span><ShieldCheck size={16} className={styles.featIcon} /> Kilométrage illimité</span>
+                  <span><ShieldCheck size={16} className={styles.featIcon} /> Plein carburant offert</span>
+                  <span><ShieldCheck size={16} className={styles.featIcon} /> Support client 24/7</span>
+                </div>
+                <a
+                  href={`https://wa.me/212671720593?text=${encodeURIComponent('Bonjour ! Je suis intéressé par le Pack Weekend Luxe sur la Hyundai Accent.')}`}
+                  target="_blank" rel="noopener noreferrer"
+                  className={`${styles.promoBtn} ${styles.promoBtnFeatured}`}
+                >
+                  Sélectionner <ArrowRight size={16} />
+                </a>
+              </div>
+            </div>
+
+            {/* Card 3 */}
+            <div className={`${styles.promoCard} promoCard`}>
+              <div className={styles.promoCardHeader}>
+                <h3>Tarif Mensuel</h3>
+                <span className={styles.promoCarName}>Pour Dacia Sandero</span>
+                <div className={styles.promoDiscount}>
+                  <span className={styles.oldPrice}>250 DH</span>
+                  <span className={styles.newPrice}>170 DH<small>/jour</small></span>
+                </div>
+              </div>
+              <div className={styles.promoCardBody}>
+                <p className={styles.promoDesc}>Le tarif le plus bas pour une flexibilité maximale sur 30 jours et plus.</p>
+                <div className={styles.promoFeatList}>
+                  <span><ShieldCheck size={16} className={styles.featIcon} /> Jusqu'à -28%</span>
+                  <span><ShieldCheck size={16} className={styles.featIcon} /> Entretien inclus</span>
+                  <span><ShieldCheck size={16} className={styles.featIcon} /> Remplacement garanti</span>
+                </div>
+                <a
+                  href={`https://wa.me/212671720593?text=${encodeURIComponent('Bonjour ! Je suis intéressé par le Tarif Mensuel sur la Dacia Sandero.')}`}
+                  target="_blank" rel="noopener noreferrer"
+                  className={styles.promoBtn}
+                >
+                  Réserver <ArrowRight size={16} />
+                </a>
+              </div>
+            </div>
+
+            
+
           </div>
         </div>
       </section>
