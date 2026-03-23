@@ -17,9 +17,9 @@ const SplitTextChars = ({ text }: { text: string }) => {
   return (
     <>
       {text.split('').map((char, i) => (
-        <span 
-          key={i} 
-          className="char" 
+        <span
+          key={i}
+          className="char"
           style={{ display: 'inline-block', whiteSpace: char === ' ' ? 'pre' : 'normal' }}
         >
           {char}
@@ -33,9 +33,9 @@ const SplitTextWords = ({ text }: { text: string }) => {
   return (
     <>
       {text.split(' ').map((word, i) => (
-        <span 
-          key={i} 
-          className="word-wrapper" 
+        <span
+          key={i}
+          className="word-wrapper"
           style={{ display: 'inline-block', overflow: 'hidden', verticalAlign: 'top', marginRight: '0.3em' }}
         >
           <span className="word" style={{ display: 'inline-block' }}>
@@ -50,15 +50,15 @@ const SplitTextWords = ({ text }: { text: string }) => {
 const Logo = () => (
   <div className={styles.logoWrapper}>
     <svg className="gsap-logo" width="45" height="35" viewBox="0 0 100 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path 
+      <path
         className="logoPath1"
-        d="M 5 45 Q 50 -10 95 45" 
+        d="M 5 45 Q 50 -10 95 45"
         stroke="#dc2626" strokeWidth="6" strokeLinecap="round" fill="none"
         strokeDasharray="200" strokeDashoffset="200"
       />
-      <path 
+      <path
         className="logoPath2"
-        d="M 15 52 Q 50 5 85 52" 
+        d="M 15 52 Q 50 5 85 52"
         stroke="#b45309" strokeWidth="6" strokeLinecap="round" fill="none"
         strokeDasharray="200" strokeDashoffset="200"
       />
@@ -96,7 +96,7 @@ export default function Home() {
 
     const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener('scroll', handleScroll);
-    
+
     return () => {
       window.removeEventListener('scroll', handleScroll);
       gsap.ticker.remove(lenis.raf);
@@ -116,23 +116,23 @@ export default function Home() {
     gsap.set('.heroImageSide', { clipPath: "polygon(20% 20%, 80% 20%, 80% 80%, 20% 80%)", filter: "grayscale(100%) blur(10px)", opacity: 0 });
     // Animate the actual image for an initial scale-down effect
     gsap.set('.heroImageReal', { scale: 1.3 });
-    
+
     gsap.set('.featureItem', { x: -50, opacity: 0 });
     gsap.set('.exploreBtn', { opacity: 0, scale: 0.8, y: 30 });
-    
+
     // Logo drawing (Infinite loop)
-    gsap.to('.logoPath1', { 
-      strokeDashoffset: 0, 
-      duration: 2, 
+    gsap.to('.logoPath1', {
+      strokeDashoffset: 0,
+      duration: 2,
       ease: "power2.inOut",
       repeat: -1,
       yoyo: true,
       repeatDelay: 0.5
     });
-    
-    gsap.to('.logoPath2', { 
-      strokeDashoffset: 0, 
-      duration: 2.2, 
+
+    gsap.to('.logoPath2', {
+      strokeDashoffset: 0,
+      duration: 2.2,
       ease: "power2.inOut",
       repeat: -1,
       yoyo: true,
@@ -175,7 +175,7 @@ export default function Home() {
     /* 2. ELEGANT PARALLAX SCROLL (Smooth & Lightweight)                          */
     /* -------------------------------------------------------------------------- */
     // Replaced heavy pinning and massive scaling with a buttery-smooth parallax effect
-    
+
     const scrollTl = gsap.timeline({
       scrollTrigger: {
         trigger: ".heroSplit",
@@ -195,7 +195,7 @@ export default function Home() {
     // Gently fade up the text block
     scrollTl.to('.heroTextSide', {
       y: -100,
-      opacity: 0,
+      opacity: 1,
       ease: "none"
     }, 0);
 
@@ -203,7 +203,7 @@ export default function Home() {
     /* 3. 3D GRID STAGGER REVEAL (THE FLEET)                                      */
     /* -------------------------------------------------------------------------- */
     // Instead of a simple fade, cards flip onto the screen with 3D rotation and scale
-    
+
     gsap.from('.gsap-section-header', {
       y: 150,
       scale: 0.9,
@@ -217,15 +217,15 @@ export default function Home() {
     });
 
     gsap.utils.toArray('.gsap-car-card').forEach((card: any, i) => {
-      gsap.fromTo(card, 
-        { 
-          y: 200, 
-          rotationX: 45, 
+      gsap.fromTo(card,
+        {
+          y: 200,
+          rotationX: 45,
           rotationY: 15,
           scale: 0.8,
           opacity: 0,
-          transformPerspective: 1000 
-        }, 
+          transformPerspective: 1000
+        },
         {
           y: 0,
           rotationX: 0,
@@ -299,10 +299,10 @@ export default function Home() {
             <a href="#contact">Contact</a>
           </nav>
           <div className={styles.navRight}>
-            <a 
-              href={`https://wa.me/212671720593?text=${encodeURIComponent(`Bonjour ! Je vous contacte depuis votre site web et je souhaite avoir plus de renseignements.`)}`} 
-              target="_blank" 
-              rel="noopener noreferrer" 
+            <a
+              href={`https://wa.me/212671720593?text=${encodeURIComponent(`Bonjour ! Je vous contacte depuis votre site web et je souhaite avoir plus de renseignements.`)}`}
+              target="_blank"
+              rel="noopener noreferrer"
               className={styles.navPhoneBtn}
             >
               <Phone size={14} /> +212 671 72 05 93
@@ -315,20 +315,20 @@ export default function Home() {
       <section id="accueil" className={`${styles.heroSplit} heroSplit`}>
         <div className={`${styles.heroTextSide} heroTextSide`}>
           <div className={`${styles.heroContent} heroContent`}>
-            
+
             {/* The WOW Typography Reveal */}
             <h1 className={`${styles.heroTitle} heroTitle`} style={{ overflow: 'hidden' }}>
-              <SplitTextWords text="L'Élégance" /> <br/>
+              <SplitTextWords text="L'Élégance" /> <br />
               <i style={{ color: 'var(--gold)', overflow: 'hidden', display: 'inline-block' }}>
                 <SplitTextWords text="en" />
-              </i> <br/>
+              </i> <br />
               <SplitTextWords text="Mouvement" />
             </h1>
-            
+
             <p className={`${styles.heroDesc} heroDesc`} style={{ overflow: 'hidden' }}>
               <SplitTextWords text="Votre agence de confiance pour la location de véhicules premium et fiables à Agadir. Explorez notre collection et voyagez dans le confort absolu." />
             </p>
-            
+
             <div className={`${styles.heroFeatures} heroFeatures`}>
               <div className={`${styles.featureItem} featureItem`}>
                 <div className={styles.featureIconBox}><MapPin size={16} color="#b45309" /></div>
@@ -352,9 +352,9 @@ export default function Home() {
         </div>
 
         <div className={`${styles.heroImageSide} heroImageSide`} style={{ transformOrigin: 'center center' }}>
-          <img 
-            src="https://images.unsplash.com/photo-1542282088-fe8426682b8f?auto=format&fit=crop&w=2000&q=80" 
-            alt="Premium Light Car" 
+          <img
+            src="https://images.unsplash.com/photo-1542282088-fe8426682b8f?auto=format&fit=crop&w=2000&q=80"
+            alt="Premium Light Car"
             className={`${styles.heroImage} heroImageReal`}
           />
         </div>
@@ -375,7 +375,7 @@ export default function Home() {
                   <span className={styles.carTopBadge}>{car.cat}</span>
                   <img src={car.img} alt={car.name} className={styles.carImageReal} />
                 </div>
-                
+
                 <div className={styles.carDetailsBox}>
                   <div className={styles.carHeaderRow}>
                     <h3>{car.name}</h3>
@@ -384,20 +384,20 @@ export default function Home() {
                       <span className={styles.period}>/ jour</span>
                     </div>
                   </div>
-                  
+
                   <div className={`${styles.carSpecsReveal} carSpecsReveal`}>
-                    <div className={`${styles.specItem} specItem`}><Users size={16} color="#9ca3af"/> {car.seats} Places</div>
-                    <div className={`${styles.specItem} specItem`}><Fuel size={16} color="#9ca3af"/> {car.fuel}</div>
-                    <div className={`${styles.specItem} specItem`}><Settings2 size={16} color="#9ca3af"/> {car.trans}</div>
+                    <div className={`${styles.specItem} specItem`}><Users size={16} color="#9ca3af" /> {car.seats} Places</div>
+                    <div className={`${styles.specItem} specItem`}><Fuel size={16} color="#9ca3af" /> {car.fuel}</div>
+                    <div className={`${styles.specItem} specItem`}><Settings2 size={16} color="#9ca3af" /> {car.trans}</div>
                   </div>
-                  
-                  <a 
+
+                  <a
                     href={`https://wa.me/212671720593?text=${encodeURIComponent(`Bonjour ! Je voudrais plus d'informations concernant la location de la ${car.name} à ${car.price} DH/jour.`)}`}
-                    target="_blank" 
-                    rel="noopener noreferrer" 
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className={styles.bookNowBtn}
                   >
-                    Plus d'Informations <ArrowRight size={18}/>
+                    Plus d'Informations <ArrowRight size={18} />
                   </a>
                 </div>
               </div>
@@ -455,7 +455,7 @@ export default function Home() {
                   <span className={styles.newPrice}>340 DH<small>/jour</small></span>
                 </div>
               </div>
-              <div className={styles.promoCardBody}>  
+              <div className={styles.promoCardBody}>
                 <p className={styles.promoDesc}>Profitez du confort exceptionnel d'une berline élégante pour votre weekend.</p>
                 <div className={styles.promoFeatList}>
                   <span><ShieldCheck size={16} className={styles.featIcon} /> Kilométrage illimité</span>
@@ -499,7 +499,7 @@ export default function Home() {
               </div>
             </div>
 
-            
+
 
           </div>
         </div>
