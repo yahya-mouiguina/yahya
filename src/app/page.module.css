@@ -469,22 +469,24 @@
   line-height: 1.5;
 }
 
-/* ── SaaS Pricing Grid ───────────────────────────────────────── */
-.promoGrid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: stretch;
-  gap: 2rem;
+/* ── SaaS Pricing Grid / Embla Carousel ───────────────────────── */
+.embla {
+  overflow: hidden;
   max-width: 1150px;
   margin: 0 auto;
+  padding: 1rem 1rem 3rem 1rem; /* Extra padding for card drop shadows */
+}
+
+.promoGrid {
+  display: flex;
+  gap: 2rem;
+  touch-action: pan-y pinch-zoom;
 }
 
 /* ── Promo Card ─────────────────────────────────────────────── */
 .promoCard {
-  flex: 1 1 280px;
-  width: 100%;
-  max-width: 360px;
+  flex: 0 0 calc(33.333% - 1.333rem); /* Desktop: 3 cards showing natively */
+  min-width: 0;
   background: var(--bg-card);
   border-radius: 12px;
   border: 1px solid var(--border-light);
@@ -494,6 +496,40 @@
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   padding: 2rem;
   position: relative;
+}
+
+/* ── Embla Navigation Buttons ─────────────────────────────── */
+.emblaNav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-top: -1rem;
+  margin-bottom: 2rem;
+  position: relative;
+  z-index: 10;
+}
+.emblaBtn {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  color: var(--text-main);
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s ease;
+}
+.emblaBtn:hover {
+  background: var(--text-main);
+  color: #fff;
+  border-color: var(--text-main);
+}
+.emblaBtn:active {
+  transform: scale(0.95);
 }
 .promoCard:hover {
   transform: translateY(-5px);
@@ -645,15 +681,10 @@
 @media (max-width: 768px) {
   .promoSection { padding: 4rem 0; }
   .promoTitle { font-size: 2.2rem; }
-  .promoGrid { 
-    flex-direction: column;
-    align-items: center; 
-  }
+
   .promoCard { 
+    flex: 0 0 85%; /* Shows 85% of one card, hinting at the next */
     padding: 1.5rem; 
-    width: 100%; 
-    max-width: 400px; /* Prevents them from getting absurdly wide on tablets */
-    margin: 0 auto;
   }
   .promoCardFeatured { transform: none; }
   .promoCardFeatured:hover { transform: translateY(-5px); }

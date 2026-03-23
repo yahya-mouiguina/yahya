@@ -5,7 +5,9 @@ import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
-import { MapPin, Calendar, ArrowRight, Phone, Mail, MapPinned, Users, Fuel, Settings2, Star, ArrowDown, ShieldCheck } from 'lucide-react';
+import useEmblaCarousel from 'embla-carousel-react';
+import Autoplay from 'embla-carousel-autoplay';
+import { MapPin, Calendar, ArrowRight, Phone, Mail, MapPinned, Users, Fuel, Settings2, Star, ArrowDown, ShieldCheck, ChevronLeft, ChevronRight } from 'lucide-react';
 import styles from './page.module.css';
 
 if (typeof window !== "undefined") {
@@ -80,6 +82,15 @@ const FLEET = [
 export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [scrolled, setScrolled] = useState(false);
+
+  // Embla Carousel Setup for Promotions
+  const [emblaRef, emblaApi] = useEmblaCarousel(
+    { loop: false, align: 'start' },
+    [Autoplay({ delay: 3500, stopOnInteraction: false, stopOnMouseEnter: true })]
+  );
+
+  const scrollPrev = () => emblaApi && emblaApi.scrollPrev();
+  const scrollNext = () => emblaApi && emblaApi.scrollNext();
 
   useEffect(() => {
     // Top-tier seamless Lenis smooth scroll
@@ -275,17 +286,8 @@ export default function Home() {
       }
     });
 
-    gsap.from('.promoCard', {
-      y: 60,
-      opacity: 0,
-      duration: 1.2,
-      stagger: 0.15,
-      ease: "expo.out",
-      scrollTrigger: {
-        trigger: '.promoGrid',
-        start: "top 85%",
-      }
-    });
+    // The cards are now managed entirely by Embla rendering engine
+    // GSAP transforms on individual slides break Embla physics
 
   }, { scope: containerRef });
 
@@ -416,9 +418,10 @@ export default function Home() {
             <p className={styles.promoSub}>Découvrez des tarifs préférentiels clairs, sans frais cachés, pensés pour répondre à chacun de vos besoins.</p>
           </div>
 
-          <div className={`${styles.promoGrid} promoGrid`}>
+          <div className={styles.embla} ref={emblaRef}>
+            <div className={`${styles.promoGrid} promoGrid`}>
 
-            {/* Card 1 */}
+              {/* Card 1 */}
             <div className={`${styles.promoCard} promoCard`}>
               <div className={styles.promoCardHeader}>
                 <h3>Semaine Découverte</h3>
@@ -501,7 +504,16 @@ export default function Home() {
             </div>
 
 
+            </div>
+          </div>
 
+          <div className={styles.emblaNav}>
+            <button className={styles.emblaBtn} onClick={scrollPrev}>
+              <ChevronLeft size={24} />
+            </button>
+            <button className={styles.emblaBtn} onClick={scrollNext}>
+              <ChevronRight size={24} />
+            </button>
           </div>
         </div>
       </section>
