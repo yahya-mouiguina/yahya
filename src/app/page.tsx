@@ -171,55 +171,33 @@ export default function Home() {
       .to('.exploreBtn', { opacity: 1, scale: 1, y: 0, duration: 0.8, ease: "back.out(2)" }, 1.3);
 
     /* -------------------------------------------------------------------------- */
-    /* 2. MIND-BLOWING PINNED SCROLL-JACKING                                      */
     /* -------------------------------------------------------------------------- */
-    const isMobile = window.innerWidth < 768;
-
-    const pinTl = gsap.timeline({
+    /* 2. ELEGANT PARALLAX SCROLL (Smooth & Lightweight)                          */
+    /* -------------------------------------------------------------------------- */
+    // Replaced heavy pinning and massive scaling with a buttery-smooth parallax effect
+    
+    const scrollTl = gsap.timeline({
       scrollTrigger: {
         trigger: ".heroSplit",
         start: "top top",
-        end: "+=700",
-        scrub: 1,
-        pin: true,
-        anticipatePin: 1
+        end: "bottom top",
+        scrub: true
       }
     });
 
-    if (!isMobile) {
-      // Desktop: text side pushes back, image expands left to fill screen
-      pinTl.to('.heroTextSide', {
-        scale: 0.7,
-        opacity: 0,
-        xPercent: -30,
-        filter: "blur(10px)",
-        ease: "power2.inOut"
-      }, 0);
+    // Parallax the image downwards inside its container as the page scrolls up
+    scrollTl.to('.heroImageReal', {
+      yPercent: 20,
+      scale: 1.05,
+      ease: "none"
+    }, 0);
 
-      pinTl.to('.heroImageSide', {
-        scale: 1.5,
-        xPercent: -35,
-        ease: "power2.inOut",
-        transformOrigin: "center center"
-      }, 0);
-    } else {
-      // Mobile: image is absolutely positioned top-half.
-      // Fade the text card below, scale image straight from its own center.
-      pinTl.to('.heroTextSide', {
-        opacity: 0,
-        y: 80,
-        filter: "blur(8px)",
-        ease: "power2.inOut"
-      }, 0);
-
-      pinTl.to('.heroImageSide', {
-        scale: 2.2,
-        xPercent: 0,
-        yPercent: 0,
-        ease: "power2.inOut",
-        transformOrigin: "50% 50%"
-      }, 0);
-    }
+    // Gently fade up the text block
+    scrollTl.to('.heroTextSide', {
+      y: -100,
+      opacity: 0,
+      ease: "none"
+    }, 0);
 
     /* -------------------------------------------------------------------------- */
     /* 3. 3D GRID STAGGER REVEAL (THE FLEET)                                      */
