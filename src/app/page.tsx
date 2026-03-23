@@ -120,9 +120,25 @@ export default function Home() {
     gsap.set('.featureItem', { x: -50, opacity: 0 });
     gsap.set('.exploreBtn', { opacity: 0, scale: 0.8, y: 30 });
     
-    // Logo drawing
-    tl.to('.logoPath1', { strokeDashoffset: 0, duration: 1.5, ease: "power3.inOut" }, 0)
-      .to('.logoPath2', { strokeDashoffset: 0, duration: 2, ease: "power3.inOut" }, 0.2);
+    // Logo drawing (Infinite loop)
+    gsap.to('.logoPath1', { 
+      strokeDashoffset: 0, 
+      duration: 2, 
+      ease: "power2.inOut",
+      repeat: -1,
+      yoyo: true,
+      repeatDelay: 0.5
+    });
+    
+    gsap.to('.logoPath2', { 
+      strokeDashoffset: 0, 
+      duration: 2.2, 
+      ease: "power2.inOut",
+      repeat: -1,
+      yoyo: true,
+      repeatDelay: 0.5,
+      delay: 0.2
+    });
 
     // Dynamic typography masked reveal
     tl.to('.word', {
@@ -163,7 +179,7 @@ export default function Home() {
       scrollTrigger: {
         trigger: ".heroSplit",
         start: "top top",
-        end: "+=1200",
+        end: "+=700",
         scrub: 1,
         pin: true,
         anticipatePin: 1
@@ -281,7 +297,7 @@ export default function Home() {
     });
 
     gsap.from('.promoCard', {
-      x: 120,
+      y: 60,
       opacity: 0,
       duration: 1.2,
       stagger: 0.15,
@@ -461,7 +477,7 @@ export default function Home() {
                   <span className={styles.newPrice}>340 DH<small>/jour</small></span>
                 </div>
               </div>
-              <div className={styles.promoCardBody}>
+              <div className={styles.promoCardBody}>  
                 <p className={styles.promoDesc}>Profitez du confort exceptionnel d'une berline élégante pour votre weekend.</p>
                 <div className={styles.promoFeatList}>
                   <span><ShieldCheck size={16} className={styles.featIcon} /> Kilométrage illimité</span>
