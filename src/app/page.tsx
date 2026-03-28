@@ -388,6 +388,7 @@ export default function Home() {
                     </div>
                   </div>
 
+
                   <div className={`${styles.carSpecsReveal} carSpecsReveal`}>
                     <div className={`${styles.specItem} specItem`}><Users size={16} color="#9ca3af" /> {car.seats} Places</div>
                     <div className={`${styles.specItem} specItem`}><Fuel size={16} color="#9ca3af" /> {car.fuel}</div>
